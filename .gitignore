@@ -1,0 +1,6 @@
+*.nii.gz
+__pycache__
+
+.venv
+Pipfile
+Pipfile.lock
