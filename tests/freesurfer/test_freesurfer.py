@@ -1,5 +1,6 @@
 # import filecmp
 
+import filecmp
 from plumbum import local
 
 import freesurfer
@@ -36,27 +37,12 @@ def test_read_stats():
 
 
 def test_fscalc_mean():
+    expected_output = TEST_DIR / 'mean.nii.gz'
     with local.tempdir() as tmpdir:
-        with local.cwd(tmpdir):
-            retcode, _, _ = freesurfer.fscalc_mean(TEST_DIR // '*.nii.gz', tmpdir / 'test.nii.gz')
-            assert retcode == 0
-            assert (tmpdir / 'test.nii.gz').exists()
-            _, stdout, _ = freesurfer.run_('fslinfo', str(tmpdir / 'test.nii.gz'))
-            assert stdout == """\
-data_type      FLOAT32
-dim1           128
-dim2           128
-dim3           63
-dim4           1
-datatype       16
-pixdim1        2.574257
-pixdim2        2.574257
-pixdim3        2.425000
-pixdim4        300.000000
-cal_max        0.0000
-cal_min        0.0000
-file_type      NIFTI-1+
-"""
+        test_output = tmpdir / 'test_mean.nii.gz'
+        retcode, _, _ = freesurfer.fscalc_mean(TEST_DIR // '*.nii.gz', test_output)
+        assert retcode == 0
+        filecmp.cmp(expected_output, test_output)
 
 
 # def test_register_to_recon():
