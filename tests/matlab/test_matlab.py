@@ -1,4 +1,4 @@
-import matlab
+from neurolib import matlab
 
 
 def test_str_command():

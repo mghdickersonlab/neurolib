@@ -8,19 +8,19 @@ install_requires = [
     'toolz',
     'plumbum',
 ]
-extras_require = {'dev': ['pytest', 'flake8', 'pylint']}
+extras_require = {'dev': ['pytest', 'flake8', 'pylint', 'ipython']}
 scripts = ['bin/ecat_to_nifti.py']
 
 setuptools.setup(
     name="neurolib",
-    version="0.0.1",
+    version="1.0.1",
     author="reckbo",
     author_email="ryan.eckbo@mgh.harvard.edu",
     description="Python interfaces for running Freesurfer, SPM, and Matlab tools",
     long_description=long_description,
-    long_description_content_type="text/markdown",
     url="",
-    packages=['freesurfer', 'matlab', 'SPM'],
+    packages=setuptools.find_packages(where="src"),
+    package_dir={"": "src"},
     include_package_data=True,
     install_requires=install_requires,
     extras_require=extras_require,

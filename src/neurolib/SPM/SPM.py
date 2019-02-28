@@ -2,7 +2,7 @@ import os
 
 from plumbum import local
 
-import matlab
+from neurolib import matlab
 
 SPM12_PATH = '/autofs/cluster/brutha/MATLAB_Scripts/spm12'
 

@@ -1,7 +1,7 @@
 from plumbum import local
 
-import freesurfer
-import SPM
+from neurolib import freesurfer
+from neurolib import SPM
 
 
 def convert_ecat_to_nifti(ecat, output_file):

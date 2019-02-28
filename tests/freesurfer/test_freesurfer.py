@@ -3,7 +3,7 @@
 import filecmp
 from plumbum import local
 
-import freesurfer
+from neurolib import freesurfer
 
 # from tests import test_data
 
