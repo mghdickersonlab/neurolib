@@ -17,8 +17,10 @@ install_requires = [
     'pandas',
     'toolz',
     'plumbum',
+    'more_itertools',
+    'pytest'
 ]
-extras_require = {'dev': ['pytest', 'flake8', 'pylint', 'ipython']}
+extras_require = {'dev': ['ipython', 'flake8', 'pylint', 'importmagic', 'epc']}
 scripts = ['bin/ecat_to_nifti.py']
 
 setuptools.setup(
