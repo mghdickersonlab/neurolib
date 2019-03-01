@@ -1,4 +1,14 @@
+import io
+import os
+import re
 import setuptools
+
+PROJECT = 'neurolib'
+
+__version__ = re.search(
+    r'__version__\s*=\s*[\'"]([^\'"]*)[\'"]',  # it excludes inline comment too
+    io.open(f'src/{PROJECT}/__init__.py', encoding='utf_8_sig').read()
+    ).group(1)
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -12,8 +22,8 @@ extras_require = {'dev': ['pytest', 'flake8', 'pylint', 'ipython']}
 scripts = ['bin/ecat_to_nifti.py']
 
 setuptools.setup(
-    name="neurolib",
-    version="1.0.2",
+    name=PROJECT,
+    version=__version__,
     author="reckbo",
     author_email="ryan.eckbo@mgh.harvard.edu",
     description="Python interfaces for running Freesurfer, SPM, and Matlab tools",
@@ -31,4 +41,3 @@ setuptools.setup(
         "Operating System :: Linux, Darwin",
     ],
 )
-
