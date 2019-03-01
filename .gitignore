@@ -5,3 +5,4 @@ Pipfile
 Pipfile.lock
 
 *.egg-info
+*.swp

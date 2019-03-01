@@ -13,7 +13,7 @@ scripts = ['bin/ecat_to_nifti.py']
 
 setuptools.setup(
     name="neurolib",
-    version="1.0.1",
+    version="1.0.2",
     author="reckbo",
     author_email="ryan.eckbo@mgh.harvard.edu",
     description="Python interfaces for running Freesurfer, SPM, and Matlab tools",

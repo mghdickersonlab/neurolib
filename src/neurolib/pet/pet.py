@@ -1,7 +1,12 @@
+import logging
+
 from plumbum import local
 
 from neurolib import freesurfer
 from neurolib import SPM
+
+
+log = logging.getLogger(__name__)
 
 
 def convert_ecat_to_nifti(ecat, output_file):
@@ -9,14 +14,26 @@ def convert_ecat_to_nifti(ecat, output_file):
         raise Exception(f'{ecat} does not exist')
     output_file = local.path(output_file)
     with local.tempdir() as tmpdir:
-        with local.cwd(tmpdir):
-            SPM.convert_ecat_to_niftis(ecat, '.')
-            niis = sorted(local.cwd // '*.nii')
-            if not niis:
-                raise Exception("No niftis found after splitting ecat file")
-            freesurfer.run(['mri_concat'] +
-                           ["'" + nii + "'" for nii in niis] +
-                           ['--o', 'ecat.nii.gz'])
-            (tmpdir / 'ecat.nii.gz').rename(output_file)
+        temp_output = tmpdir / 'ecat.nii.gz'
+        SPM.ecat2nifti(ecat, tmpdir)
+        niis = sorted(tmpdir // '*.nii')
+        freesurfer.run(['mri_concat'] +
+                       ["'" + nii + "'" for nii in niis] +
+                       ['--o', temp_output])
+        temp_output.rename(output_file)
     if not local.path(output_file).exists():
         raise Exception(f'Failed to make {output_file}')
+
+
+def nifti_extract_frames(nifti, frames, output):
+    freesurfer.runv('mri_convert',
+                    '-i', nifti,
+                    '-o', output,
+                    '-f', *frames)
+
+
+def nifti_mean(nifti, output):
+    freesurfer.runv('mri_concat',
+                    nifti,
+                    '--mean',
+                    '--o', output)
