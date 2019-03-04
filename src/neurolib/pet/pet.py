@@ -23,17 +23,3 @@ def convert_ecat_to_nifti(ecat, output_file):
         temp_output.rename(output_file)
     if not local.path(output_file).exists():
         raise Exception(f'Failed to make {output_file}')
-
-
-def nifti_extract_frames(nifti, frames, output):
-    freesurfer.runv('mri_convert',
-                    '-i', nifti,
-                    '-o', output,
-                    '-f', *frames)
-
-
-def nifti_mean(nifti, output):
-    freesurfer.runv('mri_concat',
-                    nifti,
-                    '--mean',
-                    '--o', output)

@@ -52,11 +52,6 @@ def make_tcsh_command(csh_script, freesurfer_version=DEFAULT_FREESURFER_VERSION)
     return tcsh['-c', f'source {source_file}; ' + csh_script]
 
 
-# TODO deprecate
-def run_(*cmd, subjects_dir=None, freesurfer_version=DEFAULT_FREESURFER_VERSION):
-    return run(cmd, subjects_dir=subjects_dir, freesurfer_version=freesurfer_version)
-
-
 def command(cmd, subjects_dir=None, freesurfer_version=DEFAULT_FREESURFER_VERSION):
     csh_script = ' '.join(map(str, cmd))
     if subjects_dir:
@@ -171,3 +166,11 @@ def freeview(*args):
     args = list(args)
     cmd = ['freeview'] + args
     run(cmd) & BG
+
+
+def nifti_extract_frames(nifti, frames, output):
+    runv('mri_convert', '-i', nifti, '-o', output, '-f', *frames)
+
+
+def nifti_mean(nifti, output):
+    runv('mri_concat', nifti, '--mean', '--o', output)
