@@ -1,5 +1,4 @@
 import io
-import os
 import re
 import setuptools
 
@@ -20,7 +19,7 @@ install_requires = [
     'more_itertools',
     'pytest'
 ]
-extras_require = {'dev': ['ipython', 'flake8', 'pylint', 'importmagic', 'epc']}
+extras_require = {'dev': ['ipython', 'flake8', 'pylint', 'importmagic', 'epc', 'autoflake']}
 scripts = ['bin/ecat_to_nifti.py']
 
 setuptools.setup(
