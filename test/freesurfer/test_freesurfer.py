@@ -1,28 +1,17 @@
-# import filecmp
-
 import filecmp
+
 from plumbum import local
+import pytest
 
 from neurolib import freesurfer
 
-# from tests import test_data
+from test.local_data import NEUROLIB_TEST_DATA, requires_local_data
 
 THIS_DIR = local.path(__file__).parent
 TEST_DIR = THIS_DIR / 'data'
 
 
-# def test_check_paths_exist():
-#     subpaths = freesurfer.GTMSEG_REQUIRED_PATHS + \
-#         freesurfer.COREG_REQUIRED_PATHS + \
-#         freesurfer.VOL2SURF_TARGET_REQUIRED_PATHS['lh'] + \
-#         freesurfer.VOL2SURF_TARGET_REQUIRED_PATHS['rh'] + \
-#         freesurfer.VOL2SURF_SOURCE_REQUIRED_PATHS['lh'] + \
-#         freesurfer.VOL2SURF_SOURCE_REQUIRED_PATHS['rh'] + \
-#         freesurfer.VOL2SURF_SOURCE_REQUIRED_PATHS_REG['lh'] + \
-#         freesurfer.VOL2SURF_SOURCE_REQUIRED_PATHS_REG['rh']
-#     freesurfer.check_paths_exist(test_data.RECON_PATH, subpaths)
-
-
+@requires_local_data
 def test_read_stats():
     header = [
         'StructName', 'NumVert', 'SurfArea', 'GrayVol', 'ThickAvg', 'ThickStd', 'MeanCurv',
@@ -31,7 +20,7 @@ def test_read_stats():
     values = [
         'lh.dan.yeo17.label', 16969, 11012, 24762, 2.14, 0.54, 0.11900000000000001, 0.025, 167, 18.0
     ]
-    stats = freesurfer.read_stats(TEST_DIR / 'lh.yeo17.dan.stats')
+    stats = freesurfer.read_stats(NEUROLIB_TEST_DATA / 'lh.yeo17.dan.stats')
     assert list(stats) == header
     assert stats.iloc[0].tolist() == values
 

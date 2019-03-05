@@ -5,9 +5,9 @@ from plumbum import local
 
 from neurolib.pet import dvr
 
-THIS_DIR = local.path(__file__).parent
-TEST_DATA = THIS_DIR / 'data'
-DVR_SRC_DIR = THIS_DIR.parent.parent / 'dvr'
+from test.local_data import NEUROLIB_TEST_DATA, requires_local_data
+
+TEST_DATA = NEUROLIB_TEST_DATA / 'dvr'
 
 FRAME_TIMES_FILE = TEST_DATA / 'ecat_frame_times.txt'
 PET_FILE = TEST_DATA / 'cr_orig.nii.gz'
@@ -19,6 +19,7 @@ EXPECTED_DVR_IMAGE = TEST_DATA / 'FS_DVR.nii.gz'
 EXPECTED_ROI_DVR_CSV = TEST_DATA / 'roi_dvr.csv'
 
 
+@requires_local_data
 def test_compute_roi_dvrs():
     with local.tempdir() as tmpdir:
         test_output_csv = tmpdir / 'fs_dvr.csv'
@@ -31,6 +32,7 @@ def test_compute_roi_dvrs():
         filecmp.cmp(test_output_csv, EXPECTED_ROI_DVR_CSV)
 
 
+@requires_local_data
 def test_compute_dvr_image_zipped_pet_file():
     with local.tempdir() as tmpdir:
         test_output_image = tmpdir / 'fs_dvr.nii.gz'
@@ -45,6 +47,7 @@ def test_compute_dvr_image_zipped_pet_file():
         assert not (GTMPVC_DIR / 'gtm.nii').exists()
 
 
+@requires_local_data
 def test_compute_dvr_image_unzipped_pet_file():
     with local.tempdir() as tmpdir:
         unzipped_pet_file = tmpdir / 'pet.nii'
@@ -61,6 +64,7 @@ def test_compute_dvr_image_unzipped_pet_file():
         assert not (GTMPVC_DIR / 'gtm.nii').exists()
 
 
+@requires_local_data
 def test_compute_dvr_image_unzipped_output():
     with local.tempdir() as tmpdir:
         test_output_image = tmpdir / 'fs_dvr.nii'

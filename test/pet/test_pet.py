@@ -1,17 +1,17 @@
 import filecmp
 
 from plumbum import local
+import pytest
 
-THIS_DIR = local.path(__file__).parent
-TEST_DATA = THIS_DIR / 'data'
+from test.local_data import requires_local_data, NEUROLIB_TEST_DATA
 
 
+@requires_local_data
 def test_convert_ecat_to_nifti_script():
     script = local['ecat_to_nifti.py']
     with local.tempdir() as tmpdir:
-        test_input = TEST_DATA / 'fdg.v'
+        test_input = NEUROLIB_TEST_DATA / 'fdg.v'
+        expected_output = NEUROLIB_TEST_DATA / 'fdg.nii.gz'
         test_output = tmpdir / 'ecat.nii.gz'
-        expected_output = TEST_DATA / 'fdg.nii.gz'
         script('-i', test_input, '-o', test_output)
-        # pet.convert_ecat_to_nifti(test_input, test_output)
         filecmp.cmp(test_output, expected_output)

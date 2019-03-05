@@ -1,12 +1,12 @@
+import filecmp
 import os
 
 import pytest
 from plumbum import local
 
 from neurolib import SPM
+from test.local_data import NEUROLIB_TEST_DATA, requires_local_data 
 
-THIS_DIR = local.path(__file__).parent
-TEST_DATA = THIS_DIR / 'data'
 
 def test_find_spm_path():
     assert SPM.find_spm_path()
@@ -17,9 +17,13 @@ def test_find_spm_path():
 #        with pytest.raises(Exception):
 #            SPM.find_spm_path()
 
+
+@requires_local_data
 def test_ecat2nifti():
-    ecat = TEST_DATA / 'fdg.v'
+    ecat = NEUROLIB_TEST_DATA / 'fdg.v'
+    expected_ecat = NEUROLIB_TEST_DATA / 'fdg.nii.gz'
     with local.tempdir() as tmpdir:
         SPM.ecat2nifti(ecat, tmpdir)
         niis = tmpdir // '*.nii'
         assert len(niis) == 1
+        filecmp.cmp(niis[0], expected_ecat)
